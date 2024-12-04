@@ -1,10 +1,18 @@
 #include <iostream>
-using namespace std;
+#include <string>
+#include "pda.h"
+#include "cli_parser.h"
+
 int main(int argc, char* argv[]){
+    CLIParser parser(argc, argv);
     
-    if(argc == 1){
-        return 1;
+    if (parser.automataType == CLIParser::AutomataType::PDA) {
+        PDAParser pdaParser;
+        PDA pda(parser.model, &pdaParser);
+        pda.printAutomata();
+    } else if (parser.automataType == CLIParser::AutomataType::TM) {
+        // TODO
     }
-    cout<<"This is for testing"<<endl;
+
     return 0;
 }
