@@ -2,6 +2,7 @@
 #include <string>
 #include "pda.h"
 #include "cli_parser.h"
+#include "tm.h"
 
 int main(int argc, char* argv[]){
     CLIParser parser(argc, argv);
@@ -15,7 +16,13 @@ int main(int argc, char* argv[]){
 
         pda.simulate(parser.input, parser.verbose);
     } else if (parser.automataType == CLIParser::AutomataType::TM) {
-        // TODO
+        TMParser tmParser;
+        TM tm(parser.model, &tmParser);
+        tm.checkInput(parser.input);
+
+        tm.printAutomata();
+
+        // tm.simulate(parser.input, parser.verbose);
     }
 
     return 0;

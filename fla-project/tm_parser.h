@@ -7,6 +7,7 @@
 #include <tuple>
 #include <vector>
 
+
 class TMParser : public Parser {
 public:
     void parse(const std::string& filename) override;
@@ -18,5 +19,5 @@ public:
     char blankSymbol;
     std::set<std::string> acceptStates;
     int numTapes;
-    std::map<std::tuple<std::string, std::string>, std::tuple<std::string, std::string, std::string, std::string>> transitionFunctions;
+    std::map<std::tuple<std::string, std::string>, std::tuple<std::string, std::string, std::string>> transitionFunctions;
 };
