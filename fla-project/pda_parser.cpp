@@ -23,14 +23,14 @@ void PDAParser::parse(const std::string& filename) {
         if (line[0] == '#') {
             size_t pos = line.find(" = ");
             if (pos == std::string::npos) {
-                std::cerr << "Syntax error: missing ' = ' in line: " << line << std::endl;
+                std::cerr << "syntax error: missing ' = ' in line: " << line << std::endl;
                 exit(1);
             }
             std::string key = line.substr(0, pos);
             std::string value = trim(line.substr(pos + 3));
 
             if ((key != "#q0" && key != "#z0") && (value.front() != '{' || value.back() != '}')) {
-                std::cerr << "Syntax error: missing '{' or '}' in line: " << line << std::endl;
+                std::cerr << "syntax error: missing '{' or '}' in line: " << line << std::endl;
                 exit(1);
             }
 
@@ -41,7 +41,7 @@ void PDAParser::parse(const std::string& filename) {
                 std::vector<std::string> symbolsVec = split(value.substr(1, value.size() - 2), ',');
                 for (const auto& symbol : symbolsVec) {
                     if (symbol.size() != 1) {
-                        std::cerr << "Syntax error: invalid input symbol in line: " << line << std::endl;
+                        std::cerr << "syntax error: invalid input symbol in line: " << line << std::endl;
                         exit(1);
                     }
                     inputSymbols.insert(symbol[0]);
@@ -50,7 +50,7 @@ void PDAParser::parse(const std::string& filename) {
                 std::vector<std::string> symbolsVec = split(value.substr(1, value.size() - 2), ',');
                 for (const auto& symbol : symbolsVec) {
                     if (symbol.size() != 1) {
-                        std::cerr << "Syntax error: invalid stack symbol in line: " << line << std::endl;
+                        std::cerr << "syntax error: invalid stack symbol in line: " << line << std::endl;
                         exit(1);
                     }
                     stackSymbols.insert(symbol[0]);
@@ -59,7 +59,7 @@ void PDAParser::parse(const std::string& filename) {
                 startState = value;
             } else if (key == "#z0") {
                 if (value.size() != 1) {
-                    std::cerr << "Syntax error: invalid start stack symbol in line: " << line << std::endl;
+                    std::cerr << "syntax error: invalid start stack symbol in line: " << line << std::endl;
                     exit(1);
                 }
                 startStackSymbol = value[0];
@@ -67,7 +67,7 @@ void PDAParser::parse(const std::string& filename) {
                 std::vector<std::string> statesVec = split(value.substr(1, value.size() - 2), ',');
                 acceptStates.insert(statesVec.begin(), statesVec.end());
             } else {
-                std::cerr << "Syntax error: unknown key in line: " << line << std::endl;
+                std::cerr << "syntax error: unknown key in line: " << line << std::endl;
                 exit(1);
             }
         } else {
@@ -75,7 +75,7 @@ void PDAParser::parse(const std::string& filename) {
             std::string currentState, nextState, stackPush;
             char inputSymbol, stackSymbol;
             if (!(iss >> currentState >> inputSymbol >> stackSymbol >> nextState >> stackPush)) {
-                std::cerr << "Syntax error: invalid transition function in line: " << line << std::endl;
+                std::cerr << "syntax error: invalid transition function in line: " << line << std::endl;
                 exit(1);
             }
             transitionFunctions[{currentState, inputSymbol, stackSymbol}] = {nextState, stackPush};

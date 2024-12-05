@@ -9,6 +9,7 @@
 class PDAParser : public Parser {
 public:
     void parse(const std::string& filename) override;
+
     std::set<std::string> states;
     std::set<char> inputSymbols;
     std::set<char> stackSymbols;

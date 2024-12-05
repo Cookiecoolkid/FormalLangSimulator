@@ -44,7 +44,3 @@ void CLIParser::parseArguments(int argc, char* argv[]) {
         }
     }
 }
-
-void CLIParser::parse(const std::string& filename) {
-    // do nothing
-}

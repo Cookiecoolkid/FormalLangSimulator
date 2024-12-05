@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <stack>
 
+
 void PDA::printAutomata() const {
     std::cerr << "========================================================================\n";
     std::cerr << "States: ";
@@ -46,9 +47,10 @@ void PDA::printStack(const std::stack<char>& stack) const {
         tempStack.pop();
     }
 
-    std::cout << "Stack: ";
+    std::cerr << "stack: ";
     for (char c : stackContents) {
-        std::cout << c << " ";
+        std::cerr << c << " ";
     }
-    std::cout << std::endl;
+    std::cerr << std::endl;
+    std::cerr << "========================================================================\n";
 }

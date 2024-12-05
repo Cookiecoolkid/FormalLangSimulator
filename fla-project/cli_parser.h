@@ -4,11 +4,10 @@
 #include <string>
 #include <vector>
 
-class CLIParser : public Parser {
+class CLIParser {
 public:
     CLIParser(int argc, char* argv[]);
     ~CLIParser();
-    void parse(const std::string& filename) override;
 
     enum class AutomataType {
         PDA,

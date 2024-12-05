@@ -13,6 +13,7 @@ class PDA : public Automata {
 public:
     PDA(const std::string& filename, PDAParser* parser);
     void simulate(const std::string& input, bool verbose) const override;
+    void checkInput(const std::string& input) const override;
     void printAutomata() const override;
     void printStack(const std::stack<char>& stack) const;
 

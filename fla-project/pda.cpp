@@ -5,6 +5,7 @@
 
 PDA::PDA(const std::string& filename, PDAParser* parser) : parser(parser) {
     parser->parse(filename);
+
     states = parser->states;
     inputSymbols = parser->inputSymbols;
     stackSymbols = parser->stackSymbols;
@@ -12,6 +13,15 @@ PDA::PDA(const std::string& filename, PDAParser* parser) : parser(parser) {
     startStackSymbol = parser->startStackSymbol;
     acceptStates = parser->acceptStates;
     transitionFunctions = parser->transitionFunctions;
+}
+
+void PDA::checkInput(const std::string& input) const {
+    for (char c : input) {
+        if (inputSymbols.find(c) == inputSymbols.end()) {
+            std::cerr << "illegal input" << std::endl;
+            exit(1);
+        }
+    }
 }
 
 /*
@@ -37,8 +47,8 @@ void PDA::simulate(const std::string& input, bool verbose) const {
         // }
 
         if (verbose) {
-            std::cerr << "Current State: " << currentState << std::endl;
-            std::cerr << "Read Symbol: " << inputSymbol << std::endl;
+            std::cerr << "current state: " << currentState << std::endl;
+            std::cerr << "read symbol:   " << inputSymbol << std::endl;
             printStack(stack);
         }
 
