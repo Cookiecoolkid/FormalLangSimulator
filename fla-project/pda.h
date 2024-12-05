@@ -4,6 +4,7 @@
 #include <set>
 #include <map>
 #include <tuple>
+#include <stack>
 #include <vector>
 #include "automata.h"
 #include "pda_parser.h"
@@ -11,7 +12,9 @@
 class PDA : public Automata {
 public:
     PDA(const std::string& filename, PDAParser* parser);
+    void simulate(const std::string& input, bool verbose) const override;
     void printAutomata() const override;
+    void printStack(const std::stack<char>& stack) const;
 
 private:
     std::set<std::string> states;

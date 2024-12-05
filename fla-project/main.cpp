@@ -9,7 +9,10 @@ int main(int argc, char* argv[]){
     if (parser.automataType == CLIParser::AutomataType::PDA) {
         PDAParser pdaParser;
         PDA pda(parser.model, &pdaParser);
+
         pda.printAutomata();
+
+        pda.simulate(parser.input, parser.verbose);
     } else if (parser.automataType == CLIParser::AutomataType::TM) {
         // TODO
     }

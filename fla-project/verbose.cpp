@@ -1,27 +1,30 @@
 #include "pda.h"
 #include <fstream>
 #include <iostream>
+#include <algorithm>
+#include <stack>
 
 void PDA::printAutomata() const {
-    std::cout << "States: ";
+    std::cerr << "========================================================================\n";
+    std::cerr << "States: ";
     for (const auto& state : states) {
-        std::cout << state << " ";
+        std::cerr << state << " ";
     }
-    std::cout << "\nInput Symbols: ";
+    std::cerr << "\nInput Symbols: ";
     for (const auto& symbol : inputSymbols) {
-        std::cout << symbol << " ";
+        std::cerr << symbol << " ";
     }
-    std::cout << "\nStack Symbols: ";
+    std::cerr << "\nStack Symbols: ";
     for (const auto& symbol : stackSymbols) {
-        std::cout << symbol << " ";
+        std::cerr << symbol << " ";
     }
-    std::cout << "\nStart State: " << startState;
-    std::cout << "\nStart Stack Symbol: " << startStackSymbol;
-    std::cout << "\nAccept States: ";
+    std::cerr << "\nStart State: " << startState;
+    std::cerr << "\nStart Stack Symbol: " << startStackSymbol;
+    std::cerr << "\nAccept States: ";
     for (const auto& state : acceptStates) {
-        std::cout << state << " ";
+        std::cerr << state << " ";
     }
-    std::cout << "\nTransition Functions:\n";
+    std::cerr << "\nTransition Functions:\n";
     for (const auto& kv : transitionFunctions) {
         const auto& key = kv.first;
         const auto& value = kv.second;
@@ -30,6 +33,22 @@ void PDA::printAutomata() const {
         std::tie(currentState, inputSymbol, stackSymbol) = key;
         std::string nextState, stackPush;
         std::tie(nextState, stackPush) = value;
-        std::cout << currentState << " " << inputSymbol << " " << stackSymbol << " -> " << nextState << " " << stackPush << "\n";
+        std::cerr << currentState << " " << inputSymbol << " " << stackSymbol << " -> " << nextState << " " << stackPush << "\n";
     }
+    std::cerr << "========================================================================\n";
+}
+
+void PDA::printStack(const std::stack<char>& stack) const {
+    std::stack<char> tempStack = stack;
+    std::vector<char> stackContents;
+    while (!tempStack.empty()) {
+        stackContents.push_back(tempStack.top());
+        tempStack.pop();
+    }
+
+    std::cout << "Stack: ";
+    for (char c : stackContents) {
+        std::cout << c << " ";
+    }
+    std::cout << std::endl;
 }
