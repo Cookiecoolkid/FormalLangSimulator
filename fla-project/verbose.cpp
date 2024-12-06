@@ -84,7 +84,7 @@ void TM::stepInfo_verbose(int step, const std::string& currentState) const {
         for (int j = leftIndex; j <= rightIndex; ++j) {
             int indexWidth = std::to_string(j >= 0 ? j : -j).size();
             indexWidths.push_back(indexWidth);
-            std::cerr << std::setw(indexWidth) << (j >= 0 ? j : -j) << " ";
+            std::cerr << std::setw(indexWidth) << std::left << (j >= 0 ? j : -j) << " ";
         }
         std::cerr << std::endl;
 
@@ -92,7 +92,7 @@ void TM::stepInfo_verbose(int step, const std::string& currentState) const {
         std::cerr << "Tape" << i << "  : ";
         auto it = left;
         for (size_t k = 0; k < indexWidths.size(); ++k) {
-            std::cerr << std::setw(indexWidths[k]) << *it << " ";
+            std::cerr << std::setw(indexWidths[k]) << std::left << *it << " ";
             ++it;
         }
         std::cerr << std::endl;
@@ -102,9 +102,9 @@ void TM::stepInfo_verbose(int step, const std::string& currentState) const {
         for (size_t k = 0; k < indexWidths.size(); ++k) {
             int currentIndex = leftIndex + k;
             if (std::distance(initial_heads[i], head) == currentIndex) {
-                std::cerr << std::setw(indexWidths[k]) << "^" << " ";
+                std::cerr << std::setw(indexWidths[k]) << std::left << "^" << " ";
             } else {
-                std::cerr << std::setw(indexWidths[k]) << " " << " ";
+                std::cerr << std::setw(indexWidths[k]) << std::left << " " << " ";
             }
         }
         std::cerr << std::endl;
