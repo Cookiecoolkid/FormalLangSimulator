@@ -15,26 +15,20 @@ PDA::PDA(const std::string& filename, PDAParser* parser) : parser(parser) {
     transitionFunctions = parser->transitionFunctions;
 }
 
-void PDA::checkInput(const std::string& input) const {
-    for (char c : input) {
-        if (inputSymbols.find(c) == inputSymbols.end()) {
-            std::cerr << "illegal input" << std::endl;
-            exit(1);
-        }
-    }
-}
-
 /*
 ** PDA::simulate 函数
 ** 仅通过状态机到达接受状态时且消耗完 input 才接受 
 */
 
-void PDA::simulate(const std::string& input, bool verbose) const {
+void PDA::simulate(const std::string& input, bool verbose) {
+
     std::string currentState = startState;
-    std::stack<char> stack;
+    size_t inputIndex = 0;
+    int step = 0;
+
+    while (!stack.empty()) stack.pop();
     stack.push(startStackSymbol);
 
-    size_t inputIndex = 0;
     while (true) {
         char inputSymbol = (inputIndex < input.size()) ? input[inputIndex] : '_';
         char stackTop = stack.empty() ? '_' : stack.top();
@@ -47,9 +41,7 @@ void PDA::simulate(const std::string& input, bool verbose) const {
         // }
 
         if (verbose) {
-            std::cerr << "current state: " << currentState << std::endl;
-            std::cerr << "read symbol:   " << inputSymbol << std::endl;
-            printStack(stack);
+            stepInfo_verbose(step++, currentState, inputSymbol);
         }
 
         if (transition == transitionFunctions.end()) {
@@ -76,9 +68,8 @@ void PDA::simulate(const std::string& input, bool verbose) const {
         }
     }
 
-    if (acceptStates.find(currentState) != acceptStates.end() && inputIndex >= input.size()) {
-        std::cout << "true" << std::endl;
-    } else {
-        std::cout << "false" << std::endl;
-    }
+    std::string result = (acceptStates.find(currentState) != acceptStates.end() && inputIndex >= input.size()) ? "true" : "false";
+
+    if (verbose) endInfo_verbose(result);
+    else std::cout << result << std::endl;
 }

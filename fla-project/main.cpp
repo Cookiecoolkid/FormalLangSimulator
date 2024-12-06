@@ -10,19 +10,19 @@ int main(int argc, char* argv[]){
     if (parser.automataType == CLIParser::AutomataType::PDA) {
         PDAParser pdaParser;
         PDA pda(parser.model, &pdaParser);
-        pda.checkInput(parser.input);
 
-        pda.printAutomata();
+        // pda.printAutomata();
 
+        pda.checkInput(parser.input, parser.verbose);
         pda.simulate(parser.input, parser.verbose);
     } else if (parser.automataType == CLIParser::AutomataType::TM) {
         TMParser tmParser;
         TM tm(parser.model, &tmParser);
-        tm.checkInput(parser.input);
 
-        tm.printAutomata();
+        // tm.printAutomata();
 
-        // tm.simulate(parser.input, parser.verbose);
+        tm.checkInput(parser.input, parser.verbose);
+        tm.simulate(parser.input, parser.verbose);
     }
 
     return 0;
