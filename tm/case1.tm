@@ -1,5 +1,5 @@
 ; the finite set of states
-#Q = {0,check,mr_reject,illegal,check1,check2,mh_accept,accept,clean,accept_halt,illegal1,illegal2,illegal3,illegal4,illegal5,illegal6,illegal7,reject_halt}
+#Q = {0,check,mr_reject,illegal,check1,check2,mh_accept,accept,clean,accept_halt,illegal1,illegal2,illegal3,illegal4,illegal5,illegal6,illegal7,illegal8,illegal9,illegal10,illegal11,illegal12,reject_halt}
 
 ; the finite set of input symbols
 #S = {a,b}
@@ -65,4 +65,9 @@ illegal3 _ e r illegal4
 illegal4 _ g r illegal5
 illegal5 _ a r illegal6
 illegal6 _ l r illegal7
-illegal7 _ _ * reject_halt
+illegal7 _ _ r illegal8
+illegal8 _ i r illegal9
+illegal9 _ n r illegal10
+illegal10 _ p r illegal11
+illegal11 _ u r illegal12
+illegal12 _ t * reject_halt

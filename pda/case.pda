@@ -1,4 +1,4 @@
-; Input: a string of "("s and ")"s, e.g. 'aabb'
+; Input: a string of "("s and ")"s
 
 ; the finite set of states
 #Q = {q0,q1,accept}
