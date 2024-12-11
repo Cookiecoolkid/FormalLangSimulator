@@ -6,7 +6,7 @@
 ; simulate the function above
 
 ; the finite set of states
-#Q = {0,binary,reject,mh_2nd_add1,add1,halt,init,loop_start,loop_start1,loop_body,loop_add,loop_body1,loop_body2,loop_body3,loop_body4,loop_body5,loop_body6,loop_body7,loop_check}
+#Q = {0,binary,reject,mh_2nd_add1,add1,halt,init,loop_start,loop_start1,loop_body,loop_body0,loop_body1,loop_body2,loop_body3,loop_body4,loop_body5,loop_body6,loop_body7,loop_body8,loop_body9,loop_body10,loop_body11,loop_add,loop_add1,loop_add2,loop_check,loop_check1,loop_check2,true,false}
 
 ; the finite set of input symbols
 #S = {1}
@@ -58,11 +58,18 @@ loop_start1 _*_ _*_ r** init
 ; State init: init i = 1 in tape1
 init _*_ 1*_ *** loop_body
 
-; State loop_body: align the tape1 & tape2
-loop_body **_ **_ rrr loop_body
-loop_body _*_ 0*_ rrr loop_body
-loop_body *__ *0_ rrr loop_body
-loop_body ___ ___ lll loop_body1
+; State loop_body: move to head for tape1,tape2
+loop_body **_ **_ lll loop_body
+loop_body *__ *__ l** loop_body
+loop_body _*_ _*_ *ll loop_body
+loop_body ___ ___ rrr loop_body0
+
+
+; State loop_body0: align the tape1 & tape2
+loop_body0 **_ **_ rrr loop_body0
+loop_body0 _*_ 0*_ rrr loop_body0
+loop_body0 *__ *0_ rrr loop_body0
+loop_body0 ___ 00_ *** loop_body1
 
 ; State loop_body1: flip (execute sub in complement code (a positive number - a positive number will not overflow))
 loop_body1 0*_ 1*_ lll loop_body1
@@ -84,10 +91,12 @@ loop_body4 00_ 00_ rrr loop_body4
 loop_body4 10_ 11_ rrr loop_body4
 loop_body4 01_ 01_ rrr loop_body4
 loop_body4 11_ 10_ rrr loop_body5
-loop_body4 ___ ___ lll loop_add
+loop_body4 ___ ___ lll loop_body8
 
 ; State: loop_body5: tag in tape3
 loop_body5 **_ **1 *** loop_body6
+loop_body5 ___ ___ lll loop_body8
+loop_body5 *__ *__ lll loop_body8
 
 ; State: loop_body6: carry in tape2
 loop_body6 *01 *11 *** loop_body7
@@ -103,3 +112,47 @@ loop_body7 *0_ *0_ *ll loop_body7
 loop_body7 *1_ *1_ *ll loop_body7
 loop_body7 *01 *0_ *** loop_body4
 loop_body7 *11 *1_ *** loop_body4
+
+; State: loop_body8: move tape1 to head
+loop_body8 *__ *__ l** loop_body8
+loop_body8 **_ **_ l** loop_body8
+loop_body8 _*_ _*_ r** loop_body9
+
+; State: loop_body9: flip tape1
+loop_body9 0*_ 1*_ r** loop_body9
+loop_body9 1*_ 0*_ r** loop_body9
+loop_body9 _*_ _*_ l** loop_body10
+
+; State: loop_body10: move tape1 to head
+loop_body10 **_ **_ l** loop_body10
+loop_body10 _*_ _*_ r** loop_body11
+
+; State: loop_body11: add 1 to tape1
+loop_body11 0*_ 1*_ *** loop_add
+loop_body11 1*_ 0*_ r** loop_body11
+loop_body11 _*_ 1*_ *** loop_add
+
+; State: loop_add: i += 2, move tape1 to second bit (+ *1)
+loop_add **_ **_ l** loop_add
+loop_add _*_ _*_ r** loop_add1
+
+; State: loop_add1: move to right
+loop_add1 **_ **_ r** loop_add2
+
+; State: loop_add2: add 2
+loop_add2 _*_ 1*_ *** loop_check
+loop_add2 0*_ 1*_ *** loop_check
+loop_add2 1*_ 0*_ r** loop_add2
+
+; State: loop_check: check n > 0 or not, move tape2 to tail first
+loop_check **_ **_ *rr loop_check
+loop_check *__ *__ *ll loop_check1
+
+; State: loop_check1: check < 0
+loop_check1 *1_ *1_ *** false
+loop_check1 *0_ *0_ *** loop_check2
+
+; State: loop_check2: check == 0
+loop_check2 *0_ *0_ *ll loop_check2
+loop_check2 *1_ *1_ *** loop_body
+loop_check2 *__ *__ *** true
