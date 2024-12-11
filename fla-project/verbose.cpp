@@ -32,8 +32,8 @@ void Automata::checkInput(const std::string& input, bool verbose) const {
             }
         }
     }
-
-    std::cerr << "==================== RUN ====================" << std::endl;
+    if (verbose)
+        std::cerr << "==================== RUN ====================" << std::endl;
 }
 
 void Automata::endInfo_verbose(std::string result) const {
