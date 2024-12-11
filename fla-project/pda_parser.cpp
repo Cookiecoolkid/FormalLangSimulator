@@ -78,6 +78,30 @@ void PDAParser::parse(const std::string& filename) {
                 std::cerr << "syntax error" << std::endl;
                 exit(1);
             }
+
+            if (states.find(currentState) == states.end() || 
+                states.find(nextState) == states.end()) {
+                std::cerr << "syntax error" << std::endl;
+                exit(1);
+            }
+
+            if (inputSymbol != '_' && inputSymbols.find(inputSymbol) == inputSymbols.end()) {
+                std::cerr << "syntax error" << std::endl;
+                exit(1);
+            }
+
+            if (stackSymbol != '_' && stackSymbols.find(stackSymbol) == stackSymbols.end()) {
+                std::cerr << "syntax error" << std::endl;
+                exit(1);
+            }
+
+            for (const auto& symbol : stackPush) {
+                if (symbol != '_' && symbol != '_' && stackSymbols.find(symbol) == stackSymbols.end()) {
+                    std::cerr << "syntax error" << std::endl;
+                    exit(1);
+                }
+            }
+
             transitionFunctions[{currentState, inputSymbol, stackSymbol}] = {nextState, stackPush};
         }
     }

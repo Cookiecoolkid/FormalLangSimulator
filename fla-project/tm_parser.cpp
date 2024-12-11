@@ -84,6 +84,32 @@ void TMParser::parse(const std::string& filename) {
                 std::cerr << "syntax error: invalid transition function in line: " << line << std::endl;
                 exit(1);
             }
+            if (states.find(currentState) == states.end() || states.find(nextState) == states.end()) {
+                std::cerr << "syntax error: invalid state in line: " << line << std::endl;
+                exit(1);
+            }
+            if (readSymbols.size() != numTapes || writeSymbols.size() != numTapes || directions.size() != numTapes) {
+                std::cerr << "syntax error: invalid number of symbols in line: " << line << std::endl;
+                exit(1);
+            }
+            for (int i = 0; i < numTapes; ++i) {
+                if (readSymbols[i] != '*' && readSymbols[i] != blankSymbol &&
+                    tapeSymbols.find(readSymbols[i]) == tapeSymbols.end()) {
+                    std::cerr << "syntax error: invalid tape symbol in line: " << line << std::endl;
+                    exit(1);
+                }
+
+                if (writeSymbols[i] != '*' && writeSymbols[i] != blankSymbol &&
+                    tapeSymbols.find(writeSymbols[i]) == tapeSymbols.end()) {
+                    std::cerr << "syntax error: invalid tape symbol in line: " << line << std::endl;
+                    exit(1);
+                }
+
+                if (directions[i] != 'l' && directions[i] != 'r' && directions[i] != '*') {
+                    std::cerr << "syntax error: invalid direction in line: " << line << std::endl;
+                    exit(1);
+                }
+            }
             transitionFunctions[{currentState, readSymbols}] = {writeSymbols, directions, nextState};
         }
     }
