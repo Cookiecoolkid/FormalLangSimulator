@@ -6,7 +6,7 @@
 ; simulate the function above
 
 ; the finite set of states
-#Q = {0,binary,reject,mh_2nd_add1,add1,halt,init,loop_start,loop_start1,loop_body,loop_body0,loop_body1,loop_body2,loop_body3,loop_body4,loop_body5,loop_body6,loop_body7,loop_body8,loop_body9,loop_body10,loop_body11,loop_add,loop_add1,loop_add2,loop_check,loop_check1,loop_check2,true,false}
+#Q = {0,binary,reject,mh_2nd_add1,add1,init,loop_start,loop_start1,loop_body,loop_body0,loop_body1,loop_body2,loop_body3,loop_body4,loop_body5,loop_body6,loop_body7,loop_body8,loop_body9,loop_body10,loop_body11,loop_add,loop_add1,loop_add2,loop_check,loop_check1,loop_check2,false_clean,false_clean1,false,false1,false2,false3,false4,false_halt,true_clean,true_clean1,true,true1,true2,true3,true_halt}
 
 ; the finite set of input symbols
 #S = {1}
@@ -21,7 +21,7 @@
 #B = _
 
 ; the set of final states
-#F = {halt}
+#F = {false_halt,true_halt}
 
 ; the number of tapes: tape3 used as tape2's track
 #N = 3
@@ -149,10 +149,48 @@ loop_check **_ **_ *rr loop_check
 loop_check *__ *__ *ll loop_check1
 
 ; State: loop_check1: check < 0
-loop_check1 *1_ *1_ *** false
+loop_check1 *1_ *1_ *** false_clean
 loop_check1 *0_ *0_ *** loop_check2
 
 ; State: loop_check2: check == 0
 loop_check2 *0_ *0_ *ll loop_check2
 loop_check2 *1_ *1_ *** loop_body
-loop_check2 *__ *__ *** true
+loop_check2 *__ *__ *** true_clean
+
+
+; State: false_clean : tape1 & tape2 move to the tail
+false_clean **_ **_ rrr false_clean
+false_clean *__ *__ r** false_clean
+false_clean _*_ _*_ *rr false_clean
+false_clean ___ ___ lll false_clean1
+
+; State: false_clean1 : clean all
+false_clean1 **_ ___ lll false_clean1
+false_clean1 *__ ___ l** false_clean1
+false_clean1 _*_ ___ *ll false_clean1
+false_clean1 ___ ___ *** false
+
+; State: write "false"
+false ___ f__ r** false1
+false1 ___ a__ r** false2
+false2 ___ l__ r** false3
+false3 ___ s__ r** false4
+false4 ___ e__ r** false_halt
+
+; State: true_clean : tape1 & tape2 move to the tail
+true_clean **_ **_ rrr true_clean
+true_clean *__ *__ r** true_clean
+true_clean _*_ _*_ *rr true_clean
+true_clean ___ ___ lll true_clean1
+
+; State: true_clean1 : clean all
+true_clean1 **_ ___ lll true_clean1
+true_clean1 *__ ___ l** true_clean1
+true_clean1 _*_ ___ *ll true_clean1
+true_clean1 ___ ___ *** true
+
+; State: write "true"
+true ___ t__ r** true1
+true1 ___ r__ r** true2
+true2 ___ u__ r** true3
+true3 ___ e__ r** true_halt
